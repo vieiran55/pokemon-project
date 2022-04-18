@@ -2,13 +2,19 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Board from './Board/'
+import { GAME_SIZE } from '../settings/constants';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <div 
+      style={{
+        position: 'relative',
+        width: GAME_SIZE,
+      }}
+      >
         <Board />
-      </header>
+      </div>
     </div>
   );
 }
