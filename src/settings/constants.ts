@@ -6,3 +6,10 @@ export const HEAD_OFFSET = 12;
 
 export const GAME_SIZE = 27 * 47; // 1280px
 export const GAME_SIZEH = 18 * 47; // 833px
+
+export enum EDirection {
+  LEFT = 'ArrowLeft',
+  RIGHT = 'ArrowRight',
+  UP = 'ArrowUp',
+  DOWN = 'ArrowDown',
+}
