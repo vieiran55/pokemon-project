@@ -1,17 +1,27 @@
 import React from "react";
 import useEnemyMoviment from "../../hooks/useEnemyMoviment";
-import { EDirection, HEAD_OFFSET, TILE_SIZE } from "../../settings/constants";
+import { EDirection, HEAD_OFFSET, TILE_SIZE, TILE_SIZELEFT, TILE_SIZETOP } from "../../settings/constants";
 
 import './index.css';
 
-const MiniDemon = () => {
-  const moviment = useEnemyMoviment ({ x: 3, y: 3})
+// const moviment = {
+//   position: { x: 5, y: 5},
+//   direction: EDirection.RIGHT,
+// }
+
+interface IProps{
+  initialPosition: {x: number; y: number}
+}
+
+const MiniDemon = (props: IProps) => {
+  const moviment = useEnemyMoviment (props.initialPosition)
+
     return (
         <div
         style={{
             position: 'absolute',  
-            bottom: TILE_SIZE * moviment.position.y,
-            left: TILE_SIZE * moviment.position.x,
+            top: TILE_SIZETOP * moviment.position.y,
+            left: TILE_SIZELEFT * moviment.position.x,
             width: TILE_SIZE,
             height: TILE_SIZE + HEAD_OFFSET,
             backgroundImage: "url(./assets/MINI-DEMON.png)" ,

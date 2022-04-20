@@ -1,4 +1,6 @@
 export const TILE_SIZE = 47;
+export const TILE_SIZELEFT = 47;
+export const TILE_SIZETOP = 54;
 
 export const DEMON_TILE_SIZE = TILE_SIZE * 2;
 

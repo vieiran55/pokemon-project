@@ -1,17 +1,21 @@
 import React from "react";
 import useEnemyMoviment from "../../hooks/useEnemyMoviment";
-import { DEMON_TILE_SIZE, EDirection, TILE_SIZE } from "../../settings/constants";
+import { DEMON_TILE_SIZE, EDirection, TILE_SIZE, TILE_SIZELEFT, TILE_SIZETOP } from "../../settings/constants";
 
 import './index.css';
 
-const Demon = () => {
-    const moviment = useEnemyMoviment ({ x: 5, y: 5})
+interface IProps {
+  initialPosition: { x: number, y: number}
+}
+
+const Demon = (props: IProps) => {
+    const moviment = useEnemyMoviment (props.initialPosition)
     return (
         <div
         style={{
             position: 'absolute',  
-            bottom: TILE_SIZE * moviment.position.y,
-            left: TILE_SIZE * moviment.position.x,
+            top: TILE_SIZETOP * moviment.position.y,
+            left: TILE_SIZELEFT * moviment.position.x,
             width: DEMON_TILE_SIZE,
             height: DEMON_TILE_SIZE,
             backgroundImage: "url(./assets/DEMON.png)" ,
