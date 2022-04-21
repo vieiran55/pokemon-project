@@ -1,5 +1,5 @@
 import React from "react";
-import { EDirection } from "../../settings/constants";
+import { EDirection, EWalker } from "../../settings/constants";
 
 export function handleNextPosition(direction, position) {
   switch (direction) {
@@ -46,7 +46,7 @@ export const canvas = [
   [WL, FL, FL, FL, FL, FL, FL, FL, FL, WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL],
   [WL, CH, MD, FL, WL, FL, FL, FL, FL, WL, FL, WL, FL, FL, FL, FL, WL, WL, FL, WL, FL, FL, FL, FL, FL, WL, WL],
   [WL, FL, FL, WL, WL, WL, WL, FL, FL, WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL, WL],
-  [WL, FL, FL, FL, WL, FL, FL, FL, FL, WL, WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL],
+  [WL, FL, FL, FL, WL, DR, FL, FL, FL, WL, WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL],
   [WL, CH, FL, FL, FL, MD, FL, FL, FL, FL, FL, WL, WL, WL, WL, FL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL],
   [WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL],
   [WL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, MD, FL, FL, FL, FL, FL, FL, FL, FL, FL, FL, WL],
@@ -59,20 +59,29 @@ export const canvas = [
   [WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL, WL],
 ];
 
-export function checkValidMoviment(nextPosition) {
+export function checkValidMoviment(nextPosition, walker) {
   const canvasValue = canvas[nextPosition.y][nextPosition.x];
 
-  if (canvasValue === ECanvas.WALL) {
-    return false;
+  const result = walker === EWalker.HERO ? getHeroValidMoves(canvasValue) : getEnemyValidMoves(canvasValue) ;
+  return result;
+}
+
+
+function getHeroValidMoves(canvasValue) { 
+  return {
+    valid: canvasValue === ECanvas.FLOOR || canvasValue === ECanvas.CHEST || canvasValue === ECanvas.TRAP || canvasValue === ECanvas.MINI_DEMON || canvasValue === ECanvas.DEMON,
+    dead: canvasValue === ECanvas.TRAP || canvasValue === ECanvas.MINI_DEMON || canvasValue === ECanvas.DEMON,
+    chest: canvasValue === ECanvas.CHEST,
+    door: canvasValue === ECanvas.DOOR
   }
 
-  if (canvasValue === ECanvas.CHEST) {
-    console.log('Pisou no Bau!')
-  }
+}
 
-  if (canvasValue === ECanvas.TRAP) {
-    console.log('Pisou na Armadilha!')
+function getEnemyValidMoves(canvasValue) {
+  return {
+    valid: canvasValue === ECanvas.FLOOR || canvasValue === ECanvas.HERO,
+    dead: false,
+    chest: false,
+    door: false,
   }
-
-  return true
 }

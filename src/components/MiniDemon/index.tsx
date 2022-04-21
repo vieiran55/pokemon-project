@@ -20,7 +20,7 @@ const MiniDemon = (props: IProps) => {
         <div
         style={{
             position: 'absolute',  
-            top: TILE_SIZETOP * moviment.position.y,
+            top: TILE_SIZETOP * moviment.position.y - HEAD_OFFSET,
             left: TILE_SIZELEFT * moviment.position.x,
             width: TILE_SIZE,
             height: TILE_SIZE + HEAD_OFFSET,

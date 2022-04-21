@@ -1,10 +1,14 @@
 import useEventListener from '@use-it/event-listener';
 import React from "react";
-import { checkValidMoviment, handleNextPosition } from '../../contexts/canvas/helpers';
-import { EDirection } from '../../settings/constants';
+import { CanvasContext } from '../../contexts/canvas';
+import { ChestsContext } from '../../contexts/chests';
+import { EDirection, EWalker } from '../../settings/constants';
 
 
 function useHeroMoviment(initialPosition) {
+  const canvasContext = React.useContext(CanvasContext);
+  const chestsContext = React.useContext(ChestsContext);
+
   const [positionState, updatePositionState] = React.useState(initialPosition);
   const [direction, updateDirectionState] = React.useState(EDirection.RIGHT);
 
@@ -15,15 +19,31 @@ function useHeroMoviment(initialPosition) {
     if (direction.indexOf('Arrow') === -1) {
       return;
     }
-    
-    const nextPosition = handleNextPosition(direction, positionState);
-    const isValidMoviment = checkValidMoviment(nextPosition);
 
-    if (isValidMoviment) {
-      updatePositionState(nextPosition);
+    const moviment = canvasContext.updateCanvas(direction, positionState, EWalker.HERO);
+
+    if (moviment.nextMove.valid) {
+      updatePositionState(moviment.nextPosition);
       updateDirectionState(direction);
     }
 
+    if (moviment.nextMove.dead) {
+      setTimeout(() => {
+        alert('Você foi de Base!')
+      })   
+      window.location.reload()
+    }
+
+    if (moviment.nextMove.chest) {
+      chestsContext.updateOpenedChests(moviment.nextPosition);
+      setTimeout(() => {
+        alert('Pokemon Detectado!!')
+      });
+    }
+
+    if (chestsContext.totalChests === chestsContext.openedChests.total && moviment.nextMove.door) {
+      console.log('Venceu!')
+    }
   });
 
   return {
